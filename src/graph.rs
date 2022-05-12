@@ -24,8 +24,8 @@ struct Edge {
 }
 
 impl Graph {
-    pub fn new() -> Graph {
-        Graph {
+    pub const fn new() -> Self {
+        Self {
             vertices: vec![],
             edges: vec![],
         }
@@ -117,47 +117,33 @@ impl Graph {
             self.vertices[i].neighbors = self.get_neighbors(self.vertices[i].index);
         }
     }
-
+  
     pub fn get_edge_value(&self, from: i32, to: i32) -> i32 {
-        if let Some(index) = self.edges.iter().position(|x| x == &Edge::new(from, to, 0)) {
-            self.edges[index].weight
-        } else {
-            println!("This edge does not exist.");
-            0
-        }
+        self.edges.iter().position(|x| x == &Edge::new(from, to, 0)).map_or_else(|| {
+          println!("This edge does not exist.");
+          0
+        }, |index| self.edges[index].weight)
     }
 
+  
+
     pub fn set_edge_value(&mut self, from: i32, to: i32, new_value: i32) {
-        if let Some(index) = self.edges.iter().position(|x| x == &Edge::new(from, to, 0)) {
-            self.edges[index].weight = new_value;
-        } else {
-            println!("This edge does not exist.");
-        }
+        self.edges.iter().position(|x| x == &Edge::new(from, to, 0)).map_or_else(||
+          println!("This edge does not exist."),
+          |index| self.edges[index].weight = new_value);
     }
 
     pub fn get_vertex_value(&mut self, index: i32) -> i32 {
-        if let Some(exists) = self
-            .vertices
-            .iter()
-            .position(|x| x == &Vertex::new(index, 0))
-        {
-            self.vertices[exists].value
-        } else {
-            println!("This vertex does not exist.");
-            0
-        }
+        self.vertices.iter().position(|x| x == &Vertex::new(index, 0)).map_or_else(|| {
+          println!("This vertex does not exist.");
+          0
+        }, |index| self.vertices[index].value)
     }
 
     pub fn set_vertex_value(&mut self, index: i32, new_value: i32) {
-        if let Some(exists) = self
-            .vertices
-            .iter()
-            .position(|x| x == &Vertex::new(index, 0))
-        {
-            self.vertices[exists].value = new_value;
-        } else {
-            println!("This vertex does not exist.");
-        }
+        self.vertices.iter().position(|x| x == &Vertex::new(index, 0)).map_or_else(|| 
+          println!("This vertex does not exist."),
+          |index| self.vertices[index].value = new_value);
     }
 
     pub fn print_adjency_list(&self) {
@@ -168,8 +154,8 @@ impl Graph {
 }
 
 impl Vertex {
-    pub fn new(index: i32, value: i32) -> Vertex {
-        Vertex {
+    pub const fn new(index: i32, value: i32) -> Self {
+        Self {
             index,
             value,
             neighbors: vec![],
@@ -184,8 +170,8 @@ impl PartialEq for Vertex {
 }
 
 impl Edge {
-    pub fn new(vertex_a: i32, vertex_b: i32, weight: i32) -> Edge {
-        Edge {
+    pub const fn new(vertex_a: i32, vertex_b: i32, weight: i32) -> Self {
+        Self {
             pair: (vertex_a, vertex_b),
             weight,
         }

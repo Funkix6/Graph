@@ -1,3 +1,7 @@
+#![deny(clippy::all)]
+#![warn(clippy::pedantic)]
+#![warn(clippy::nursery)]
+
 mod graph;
 
 use crate::graph::Graph;
@@ -27,4 +31,10 @@ fn main() {
     my_graph.remove_vertex(4);
     my_graph.remove_edge(1, 2);
     my_graph.print_adjency_list();
+    my_graph.set_edge_value(2, 3, 10);
+    my_graph.get_edges();
+    my_graph.adjacent(2, 3);
+    my_graph.get_vertex_value(2);
+    my_graph.set_vertex_value(2, 20);
+    println!("{}", my_graph.get_edge_value(2, 3));
 }
